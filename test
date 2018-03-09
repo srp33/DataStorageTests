@@ -1,14 +1,21 @@
 #!/bin/bash
 
+mkdir -p ParquetData Logs
+
 datasets="GSE10320 GSE62944_Tumor_TPM"
 
 for dataset in $datasets
 do
-  python3 LoadFromTsv.py $dataset TsvData/$dataset/data.tsv ParquetData/$dataset.pq
-done
+  inFile=TsvData/$dataset/data.tsv
+  parquetFile=ParquetData/$dataset.pq
+  loadLogFile=Logs/LoadFromTsv.$dataset
+  readLogFile=Logs/Read.$dataset
 
-#for dataset in $datasets
-#do
-#  python3 LoadFromTsv.py $dataset
-#  break
-#done
+  if [ ! -f $parquetFile ]
+  then
+    python3 LoadFromTsv.py $dataset $inFile $parquetFile | tee $loadLogFile
+  fi
+
+  python3 ReadWrite.py $dataset $parquetFile | tee $readLogFile
+#break
+done

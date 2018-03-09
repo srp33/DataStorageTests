@@ -1,15 +1,24 @@
 # TODO:
 #   Quantify time to execute the following:
 #     Retrieve the first 3 columns and save to an output (TSV) file.
-#     Retrieve 3 random columns and save to an output (TSV) file.
-#     Filter based on the first 3 columns and retrieve the next 3 columns.
-#     Filter based on 3 random columns and retrieve 3 random columns.
+#       Probably read to pandas DataFrame first.
+#     Retrieve 3 random columns and save to a TSV file.
+#     Retrieve all columns and save to a TSV file.
+#     Filter rows based on the first 3 columns and retrieve data for the next 3 columns.
+#       Get intersection of row indices that match filters.
+#       Should be able to retrieve columns by name, all at once.
+#     Filter rows based on 3 random columns and retrieve 3 random columns.
+#     Filter rows based on 3 random columns and retrieve all columns.
 #
 #  Later:
+#     Try memory_map parameter of pandas.read_csv
+#     Specify value for compression parameter in pandas.read_csv
+#     Play with chunksize parameter in pandas.read_csv
+#     Try c engine for pandas.read_csv
+#     Try writing the file using one row group per sample. See https://arrow.apache.org/docs/python/parquet.html
 #     Repeat LoadFromTsv when TSV files are gzipped.
-#     Check to see which compression method is best.
+#     Compare different compression schemes.
 #     Try reading parquet file using pandas rather than pyarrow.
 #     Try using dask rather than pandas to read the TSV file and write the parquet file. Example: http://datashader.org/user_guide/10_Performance.html
-#     Compare different compression schemes
 #     Discrete values...
-#     Metadata...
+#     Missing values...

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+sudo apt-get install python3-pip -y
 sudo pip3 install pandas
 sudo pip3 install pyarrow
 sudo pip3 install dask[dataframe]

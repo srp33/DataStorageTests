@@ -1,30 +1,29 @@
 import pyarrow.parquet as pq
 import pyarrow as pa
 import pandas as pd
-import time, sys
+import datetime, sys, time
 
 dataset = sys.argv[1]
 tsvFilePath = sys.argv[2]
 parquetFilePath = sys.argv[3]
 
-print("Showing results for {}...".format(dataset))
-
+print("Showing results for {} on {}...".format(dataset, datetime.datetime.now()), flush=True)
 start = time.time()
 
 df = pd.read_csv(tsvFilePath, sep="\t")
 step1 = time.time()
-print("Elapsed time for pd.read_csv: {} steps.".format(step1 - start))
+print("Elapsed time for pd.read_csv: {} seconds.".format(step1 - start), flush=True)
 
 table = pa.Table.from_pandas(df)
 step2 = time.time()
-print("Elapsed time for pa.Table.from_pandas: {} steps.".format(step2 - step1))
+print("Elapsed time for pa.Table.from_pandas: {} seconds.".format(step2 - step1), flush=True)
 
 pq.write_table(table, parquetFilePath) # snappy compression is the default
 #pq.write_table(table, parquetFilePath, compression='gzip')
 #pq.write_table(table, parquetFilePath, compression='brotli')
 #pq.write_table(table, parquetFilePath, compression='none')
 step3 = time.time()
-print("Elapsed time for pq.write_table: {} steps.".format(step3 - step2))
+print("Elapsed time for pq.write_table: {} seconds.".format(step3 - step2), flush=True)
 
 
 # TODO:
