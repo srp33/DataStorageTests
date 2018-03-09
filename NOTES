@@ -6,6 +6,8 @@
 #     Filter based on 3 random columns and retrieve 3 random columns.
 #
 #  Later:
+#     Repeat LoadFromTsv when TSV files are gzipped.
+#     Check to see which compression method is best.
 #     Try reading parquet file using pandas rather than pyarrow.
 #     Try using dask rather than pandas to read the TSV file and write the parquet file. Example: http://datashader.org/user_guide/10_Performance.html
 #     Compare different compression schemes

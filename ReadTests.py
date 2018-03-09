@@ -4,10 +4,11 @@ import pandas as pd
 import time, sys
 
 dataset = sys.argv[1]
-tsvFilePath = sys.argv[2]
-parquetFilePath = sys.argv[3]
 
-print("Showing results for {}...".format(dataset))
+tsvFilePath = "{}/data.tsv".format(dataset)
+parquetFilePath = "/tmp/{}.pq".format(dataset)
+
+print("Showing results for {}.".format(dataset))
 
 start = time.time()
 
