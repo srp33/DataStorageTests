@@ -1,12 +1,13 @@
 # TODO:
-#   Using that file, quantify time to execute the following:
-#      Read the file into a pandas DataFrame.
-#     Retrieve the first 3 columns and save to a TSV file.
-#     Retrieve 3 random columns and save to a TSV file.
+#   Quantify time to execute the following:
+#     Retrieve the first 3 columns and save to an output (TSV) file.
+#     Retrieve 3 random columns and save to an output (TSV) file.
 #     Filter based on the first 3 columns and retrieve the next 3 columns.
-#     Filter based on the 3 random columns and retrieve 3 random columns.
-#     Try using dask rather than pandas to read the TSV file and write the parquet file. Example: http://datashader.org/user_guide/10_Performance.html
-#     Try reading parquet file using pandas (version 0.22) rather than pyarrow.
+#     Filter based on 3 random columns and retrieve 3 random columns.
+#
 #  Later:
+#     Try reading parquet file using pandas rather than pyarrow.
+#     Try using dask rather than pandas to read the TSV file and write the parquet file. Example: http://datashader.org/user_guide/10_Performance.html
 #     Compare different compression schemes
 #     Discrete values...
+#     Metadata...
