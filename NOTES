@@ -10,7 +10,14 @@
 #     Filter rows based on 3 random columns and retrieve 3 random columns.
 #     Filter rows based on 3 random columns and retrieve all columns.
 #
-#  Later:
+#   Later:
+#     Optimize speed of accessing the data using the above scenarios.
+#       We will likely need to optimize accessing rows, in particular.
+#       Take a look at the section called "Writing and Reading Random Access Files" here: Writing and Reading Random Access Files
+#         Can set up each row of data as a batch and stream the file?
+#         The "Reading from Stream and File Format for pandas" section may work.
+#         Or the section called "Serializing pandas Objects".
+#         Some other better way?
 #     Try memory_map parameter of pandas.read_csv
 #     Specify value for compression parameter in pandas.read_csv
 #     Play with chunksize parameter in pandas.read_csv
