@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#for dataset in GSE10320 GSE62944_Tumor_TPM
+for dataset in GSE10320
+do
+  python3 LoadFromTsv.py $dataset
+done
