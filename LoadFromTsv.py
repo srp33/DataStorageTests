@@ -6,17 +6,21 @@ import dask.dataframe as dd
 
 dataset = sys.argv[1]
 tsvFilePath = sys.argv[2]
-parquetFilePath = sys.argv[3]
+tsvFilePath2 = sys.argv[3]
+parquetFilePath = sys.argv[4]
 
 print("Showing results for {} on {}...".format(dataset, datetime.datetime.now()), flush=True)
 start = time.time()
 
 #change back to pd.read_csv
 df = pd.read_csv(tsvFilePath, sep="\t",engine='c')
+df2 = pd.read_csv(tsvFilePath2, sep="\t", engine='c')
 step1 = time.time()
-print("Elapsed time for pd.read_csv: {} seconds.".format(step1 - start), flush=True)
 
-table = pa.Table.from_pandas(df)
+print("Elapsed time for pd.read_csv: {} seconds.".format(step1 - start), flush=True)
+mergedDF = pd.merge(df,df2, how='inner', on='Sample')
+
+table = pa.Table.from_pandas(mergedDF)
 step2 = time.time()
 print("Elapsed time for pa.Table.from_pandas: {} seconds.".format(step2 - step1), flush=True)
 
