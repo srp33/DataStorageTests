@@ -2,7 +2,7 @@
 
 mkdir -p ParquetData Logs
 
-datasets="GSE10320 GSE62944_Tumor_TPM"
+datasets="METABRIC"
 
 for dataset in $datasets
 do
