@@ -7,13 +7,14 @@ datasets="METABRIC"
 for dataset in $datasets
 do
   inFile=TsvData/$dataset/data.tsv
+  inFile2=TsvData/$dataset/converted_metadata.txt
   parquetFile=ParquetData/$dataset.pq
   loadLogFile=Logs/LoadFromTsv.$dataset
   readLogFile=Logs/Read.$dataset
 
   if [ ! -f $parquetFile ]
   then
-    python3 LoadFromTsv.py $dataset $inFile $parquetFile | tee $loadLogFile
+    python3 LoadFromTsv.py $dataset $inFile $inFile2 $parquetFile | tee $loadLogFile
   fi
 
   python3 ReadWrite.py $dataset $parquetFile | tee $readLogFile
