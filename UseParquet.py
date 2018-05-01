@@ -62,7 +62,10 @@ def getColumnInfo(parquetFilePath, columnName:str, sizeLimit:int=None)->ColumnIn
 	uniqueValues = set()
 	counter =0
 	for index, row in df.iterrows():
-		uniqueValues.add(row[columnName])
+		try:
+			uniqueValues.add(row[columnName])
+		except (TypeError, KeyError) as e:
+			return None
 		counter+=1
 		if sizeLimit != None:
 			if counter>=sizeLimit:
