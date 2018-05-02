@@ -1,6 +1,7 @@
 import pyarrow.parquet as pq
 import pyarrow as pa
 import pandas as pd
+import dask.dataframe as dd
 import xlsxwriter
 from sqlalchemy import create_engine
 from ColumnInfo import ColumnInfo
@@ -9,6 +10,7 @@ from DiscreteQuery import DiscreteQuery
 from OperatorEnum import OperatorEnum
 from FileTypeEnum import FileTypeEnum
 import sys
+import time
 
 def peek(parquetFilePath, numRows=10, numCols=10)->pd.DataFrame:
 	
@@ -23,11 +25,6 @@ def peek(parquetFilePath, numRows=10, numCols=10)->pd.DataFrame:
 	df.set_index("Sample", drop=True, inplace=True)
 	df=df.iloc[0:numRows, 0:numCols]
 	return df
-
-def columnsPyarrow(parquetFilePath, numRows=10, numCols=10):
-	table= pq.read_table(parquetFilePath)
-	columns = list(table.schema)
-	return columns
 
 def peekByColumnNames(parquetFilePath, listOfColumnNames,numRows=10)->pd.DataFrame:
 	listOfColumnNames.insert(0,"Sample")
@@ -58,19 +55,23 @@ def getColumnInfo(parquetFilePath, columnName:str, sizeLimit:int=None)->ColumnIn
 	Given a parquet file and column name, returns a ColumnInfo object describing the column's name,data type (discrete/continuous), and all its unique values	
 	"""
 	columnList = [columnName]
+	t = time.time()
 	df = pd.read_parquet(parquetFilePath, columns=columnList)
+	t2= time.time()
+	print("read in dataframe: " + str(t2-t))
+
 	uniqueValues = set()
-	counter =0
 	for index, row in df.iterrows():
 		try:
 			uniqueValues.add(row[columnName])
 		except (TypeError, KeyError) as e:
 			return None
-		counter+=1
 		if sizeLimit != None:
-			if counter>=sizeLimit:
+			if len(uniqueValues)>=sizeLimit:
 				break
 	uniqueValues = list(uniqueValues)
+	t3 = time.time()
+	print("iterate through dataframe: " + str(t3-t2))
 	if isinstance(uniqueValues[0],str):
 		return ColumnInfo(columnName,"discrete", uniqueValues)
 	else:
@@ -87,12 +88,13 @@ def query(parquetFilePath, columnList: list=[], continuousQueries: list=[], disc
 	
 	#extract all necessary columns in order to read them into pandas
 	for query in continuousQueries:
-		columnList.append(query.columnName)
+		if query.columnName not in columnList:
+			columnList.append(query.columnName)
 	for query in discreteQueries:
 		if query.columnName not in columnList:
 			columnList.append(query.columnName)
 	columnList.insert(0,"Sample")
-	df = pd.read_parquet(parquetFilePath, columns = columnList)
+	df = dd.read_parquet(parquetFilePath, columns = columnList)
 	df.set_index("Sample", drop=True, inplace=True)
 	del columnList[0]
 
