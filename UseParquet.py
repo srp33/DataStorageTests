@@ -94,7 +94,7 @@ def query(parquetFilePath, columnList: list=[], continuousQueries: list=[], disc
 		if query.columnName not in columnList:
 			columnList.append(query.columnName)
 	columnList.insert(0,"Sample")
-	df = dd.read_parquet(parquetFilePath, columns = columnList)
+	df = pd.read_parquet(parquetFilePath, columns = columnList)
 	df.set_index("Sample", drop=True, inplace=True)
 	del columnList[0]
 
@@ -116,10 +116,12 @@ def query(parquetFilePath, columnList: list=[], continuousQueries: list=[], disc
 	
 	return df
 
-def exportQueryResults(parquetFilePath, outFilePath, outFileType:FileTypeEnum, columnList: list=[], continuousQueries: list=[], discreteQueries: list=[]):
+def exportQueryResults(parquetFilePath, outFilePath, outFileType:FileTypeEnum, columnList: list=[], continuousQueries: list=[], discreteQueries: list=[], transpose= False):
 	"""Wrapper function for query that exectues queries then exports them to the given file type, such as JSON or CSV
 	"""
 	df = query(parquetFilePath, columnList, continuousQueries, discreteQueries)
+	if transpose:
+		df=df.transpose()
 	if outFileType== FileTypeEnum.CSV:
 		df.to_csv(path_or_buf=outFilePath, sep='\t')
 	elif outFileType == FileTypeEnum.JSON:
@@ -141,4 +143,9 @@ def exportQueryResults(parquetFilePath, outFilePath, outFileType:FileTypeEnum, c
 		df.to_stata(outFilePath)
 	elif outFileType == FileTypeEnum.Pickle:
 		df.to_pickle(outFilePath)
+	elif outFileType == FileTypeEnum.HTML:
+		html = df.to_html()
+		outFile = open(outFilePath, "w")
+		outFile.write(html)
+		outFile.close()
 
